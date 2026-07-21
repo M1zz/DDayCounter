@@ -40,6 +40,8 @@ struct DDayItem: Codable, Identifiable, Hashable {
     var symbol: String
     /// 매년 반복 여부 (생일, 기념일 등)
     var repeatsYearly: Bool
+    /// 음력 날짜 여부 (true면 date를 음력으로 해석·표시하고, 반복 시 음력 기준으로 계산)
+    var isLunar: Bool
     /// 생성 시각 (정렬용)
     var createdAt: Date
 
@@ -50,6 +52,7 @@ struct DDayItem: Codable, Identifiable, Hashable {
          colorHex: String = "#4C6EF5",
          symbol: String = "🎯",
          repeatsYearly: Bool = false,
+         isLunar: Bool = false,
          createdAt: Date = Date()) {
         self.id = id
         self.title = title
@@ -58,7 +61,26 @@ struct DDayItem: Codable, Identifiable, Hashable {
         self.colorHex = colorHex
         self.symbol = symbol
         self.repeatsYearly = repeatsYearly
+        self.isLunar = isLunar
         self.createdAt = createdAt
+    }
+
+    // 기존에 저장된 데이터(isLunar 필드 없음)와의 호환을 위한 디코딩
+    enum CodingKeys: String, CodingKey {
+        case id, title, date, style, colorHex, symbol, repeatsYearly, isLunar, createdAt
+    }
+
+    init(from decoder: Decoder) throws {
+        let c = try decoder.container(keyedBy: CodingKeys.self)
+        id = try c.decode(UUID.self, forKey: .id)
+        title = try c.decode(String.self, forKey: .title)
+        date = try c.decode(Date.self, forKey: .date)
+        style = try c.decode(DDayCountStyle.self, forKey: .style)
+        colorHex = try c.decode(String.self, forKey: .colorHex)
+        symbol = try c.decode(String.self, forKey: .symbol)
+        repeatsYearly = try c.decode(Bool.self, forKey: .repeatsYearly)
+        isLunar = try c.decodeIfPresent(Bool.self, forKey: .isLunar) ?? false
+        createdAt = try c.decode(Date.self, forKey: .createdAt)
     }
 }
 
@@ -70,6 +92,27 @@ extension DDayItem {
     func effectiveDate(reference: Date = Date()) -> Date {
         let cal = Calendar.current
         let startOfRef = cal.startOfDay(for: reference)
+
+        // 음력 처리
+        if isLunar {
+            guard repeatsYearly else { return date }
+            let lunar = KoreanLunar.components(from: date)
+            let refYear = cal.component(.year, from: reference)
+            // 올해 음력 발생일
+            if let thisYear = KoreanLunar.occurrence(month: lunar.month, day: lunar.day,
+                                                     isLeap: lunar.isLeap, inGregorianYear: refYear) {
+                if cal.startOfDay(for: thisYear) >= startOfRef {
+                    return thisYear
+                }
+                // 이미 지났으면 내년 음력 발생일
+                if let nextYear = KoreanLunar.occurrence(month: lunar.month, day: lunar.day,
+                                                         isLeap: lunar.isLeap, inGregorianYear: refYear + 1) {
+                    return nextYear
+                }
+                return thisYear
+            }
+            return date
+        }
 
         guard repeatsYearly else { return date }
 
@@ -120,12 +163,27 @@ extension DDayItem {
         }
     }
 
-    /// 보조 설명 (예: "2026년 11월 19일 (목)")
-    func dateText(reference: Date = Date()) -> String {
+    /// 양력 날짜 문자열 (예: "2026년 11월 19일 (목)")
+    func solarDateText(reference: Date = Date()) -> String {
         let formatter = DateFormatter()
         formatter.locale = Locale(identifier: "ko_KR")
         formatter.dateFormat = "yyyy년 M월 d일 (E)"
         return formatter.string(from: effectiveDate(reference: reference))
+    }
+
+    /// 음력 날짜 문자열 (음력 항목일 때만, 예: "음력 8월 15일")
+    func lunarText(reference: Date = Date()) -> String? {
+        guard isLunar else { return nil }
+        return KoreanLunar.lunarString(from: effectiveDate(reference: reference))
+    }
+
+    /// 보조 설명 (예: "2026년 11월 19일 (목)", 음력이면 "음력 8월 15일 · 2026년 …")
+    func dateText(reference: Date = Date()) -> String {
+        let solar = solarDateText(reference: reference)
+        if let lunar = lunarText(reference: reference) {
+            return "\(lunar) · \(solar)"
+        }
+        return solar
     }
 
     var color: Color {

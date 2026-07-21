@@ -15,6 +15,13 @@ struct DDayCounterApp: App {
         WindowGroup {
             ContentView()
                 .environmentObject(store)
+                .sheet(isPresented: Binding(
+                    get: { !store.hasChosenCalendarMode },
+                    set: { _ in }
+                )) {
+                    CalendarModeOnboardingView()
+                        .environmentObject(store)
+                }
         }
     }
 }

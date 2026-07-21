@@ -16,6 +16,10 @@ enum AppGroup {
     static let storageKey = "ddayItems"
     /// 위젯이 표시할 대표 디데이 id 저장 키
     static let pinnedKey = "pinnedDDayID"
+    /// 전역 달력 모드(양력/음력) 저장 키
+    static let calendarModeKey = "calendarMode"
+    /// 앱 최초 실행 시 달력 모드 선택을 마쳤는지 여부 저장 키
+    static let calendarModeChosenKey = "calendarModeChosen"
 }
 
 /// 디데이 데이터를 관리하고 App Group UserDefaults에 영속화하는 저장소
@@ -33,6 +37,16 @@ final class DDayStore: ObservableObject {
             defaults?.set(pinnedID?.uuidString, forKey: AppGroup.pinnedKey)
             WidgetCenter.shared.reloadAllTimelines()
         }
+    }
+
+    /// 전역 달력 모드 (새 디데이의 기본 양력/음력 값을 결정)
+    @Published var calendarMode: CalendarMode = .solar {
+        didSet { defaults?.set(calendarMode.rawValue, forKey: AppGroup.calendarModeKey) }
+    }
+
+    /// 최초 실행 시 달력 모드 선택 완료 여부 (온보딩 표시 제어)
+    @Published var hasChosenCalendarMode: Bool = false {
+        didSet { defaults?.set(hasChosenCalendarMode, forKey: AppGroup.calendarModeChosenKey) }
     }
 
     private let defaults = UserDefaults(suiteName: AppGroup.identifier)
@@ -112,6 +126,11 @@ final class DDayStore: ObservableObject {
         if let str = defaults.string(forKey: AppGroup.pinnedKey) {
             pinnedID = UUID(uuidString: str)
         }
+        if let modeStr = defaults.string(forKey: AppGroup.calendarModeKey),
+           let mode = CalendarMode(rawValue: modeStr) {
+            calendarMode = mode
+        }
+        hasChosenCalendarMode = defaults.bool(forKey: AppGroup.calendarModeChosenKey)
     }
 
     // MARK: - 위젯 전용 읽기 (익스텐션에서 사용)

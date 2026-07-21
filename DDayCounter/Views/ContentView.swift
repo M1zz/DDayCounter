@@ -103,9 +103,18 @@ struct DDayRow: View {
                             .foregroundStyle(.orange)
                     }
                 }
-                Text(item.dateText())
-                    .font(.subheadline)
-                    .foregroundStyle(.secondary)
+                if let lunar = item.lunarText() {
+                    Text(lunar)
+                        .font(.subheadline)
+                        .foregroundStyle(.secondary)
+                    Text(item.solarDateText())
+                        .font(.subheadline)
+                        .foregroundStyle(.secondary)
+                } else {
+                    Text(item.solarDateText())
+                        .font(.subheadline)
+                        .foregroundStyle(.secondary)
+                }
             }
 
             Spacer()

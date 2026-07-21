@@ -13,6 +13,8 @@
 		1A0000000000000000000073 /* DDayItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A0000000000000000000053 /* DDayItem.swift */; };
 		1A0000000000000000000074 /* Color+Hex.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A0000000000000000000054 /* Color+Hex.swift */; };
 		1A0000000000000000000075 /* DDayStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A0000000000000000000055 /* DDayStore.swift */; };
+		1A0000000000000000000078 /* LunarCalendar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A0000000000000000000068 /* LunarCalendar.swift */; };
+		1A0000000000000000000079 /* CalendarModeOnboardingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A0000000000000000000069 /* CalendarModeOnboardingView.swift */; };
 		1A0000000000000000000076 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 1A0000000000000000000056 /* Assets.xcassets */; };
 		1A0000000000000000000077 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 1A0000000000000000000057 /* Preview Assets.xcassets */; };
 		1A0000000000000000000080 /* DDayWidgetBundle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A0000000000000000000060 /* DDayWidgetBundle.swift */; };
@@ -22,6 +24,7 @@
 		1A0000000000000000000084 /* DDayItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A0000000000000000000053 /* DDayItem.swift */; };
 		1A0000000000000000000085 /* Color+Hex.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A0000000000000000000054 /* Color+Hex.swift */; };
 		1A0000000000000000000086 /* DDayStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A0000000000000000000055 /* DDayStore.swift */; };
+		1A0000000000000000000089 /* LunarCalendar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A0000000000000000000068 /* LunarCalendar.swift */; };
 		1A0000000000000000000087 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 1A0000000000000000000064 /* Assets.xcassets */; };
 		1A0000000000000000000090 /* DDayWidgetExtension.appex in Embed Foundation Extensions */ = {isa = PBXBuildFile; fileRef = 1A0000000000000000000067 /* DDayWidgetExtension.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 /* End PBXBuildFile section */
@@ -57,6 +60,8 @@
 		1A0000000000000000000053 /* DDayItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DDayItem.swift; sourceTree = "<group>"; };
 		1A0000000000000000000054 /* Color+Hex.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Color+Hex.swift"; sourceTree = "<group>"; };
 		1A0000000000000000000055 /* DDayStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DDayStore.swift; sourceTree = "<group>"; };
+		1A0000000000000000000068 /* LunarCalendar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LunarCalendar.swift; sourceTree = "<group>"; };
+		1A0000000000000000000069 /* CalendarModeOnboardingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalendarModeOnboardingView.swift; sourceTree = "<group>"; };
 		1A0000000000000000000056 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		1A0000000000000000000057 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
 		1A0000000000000000000058 /* DDayCounter.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = DDayCounter.entitlements; sourceTree = "<group>"; };
@@ -127,6 +132,7 @@
 			children = (
 				1A0000000000000000000051 /* ContentView.swift */,
 				1A0000000000000000000052 /* DDayEditorView.swift */,
+				1A0000000000000000000069 /* CalendarModeOnboardingView.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -137,6 +143,7 @@
 				1A0000000000000000000053 /* DDayItem.swift */,
 				1A0000000000000000000054 /* Color+Hex.swift */,
 				1A0000000000000000000055 /* DDayStore.swift */,
+				1A0000000000000000000068 /* LunarCalendar.swift */,
 			);
 			path = Shared;
 			sourceTree = "<group>";
@@ -271,6 +278,8 @@
 				1A0000000000000000000073 /* DDayItem.swift in Sources */,
 				1A0000000000000000000074 /* Color+Hex.swift in Sources */,
 				1A0000000000000000000075 /* DDayStore.swift in Sources */,
+				1A0000000000000000000078 /* LunarCalendar.swift in Sources */,
+				1A0000000000000000000079 /* CalendarModeOnboardingView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -285,6 +294,7 @@
 				1A0000000000000000000084 /* DDayItem.swift in Sources */,
 				1A0000000000000000000085 /* Color+Hex.swift in Sources */,
 				1A0000000000000000000086 /* DDayStore.swift in Sources */,
+				1A0000000000000000000089 /* LunarCalendar.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -396,7 +406,7 @@
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = DDayCounter/Info.plist;
-				INFOPLIST_KEY_CFBundleDisplayName = "디데이";
+				INFOPLIST_KEY_CFBundleDisplayName = "음력세기";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -425,7 +435,7 @@
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = DDayCounter/Info.plist;
-				INFOPLIST_KEY_CFBundleDisplayName = "디데이";
+				INFOPLIST_KEY_CFBundleDisplayName = "음력세기";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -450,7 +460,7 @@
 				DEVELOPMENT_TEAM = QGAQ3AY3R3;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = DDayWidget/Info.plist;
-				INFOPLIST_KEY_CFBundleDisplayName = "디데이";
+				INFOPLIST_KEY_CFBundleDisplayName = "음력세기";
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -475,7 +485,7 @@
 				DEVELOPMENT_TEAM = QGAQ3AY3R3;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = DDayWidget/Info.plist;
-				INFOPLIST_KEY_CFBundleDisplayName = "디데이";
+				INFOPLIST_KEY_CFBundleDisplayName = "음력세기";
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",

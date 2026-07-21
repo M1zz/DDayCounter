@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>음력세기 지원</title>
+<style>
+  :root {
+    --bg1: #6d8bff; --bg2: #4c6ef5; --bg3: #2a2168;
+    --card: rgba(255,255,255,0.96); --text: #1e2340; --muted: #5b6180;
+    --accent: #4c6ef5; --line: rgba(0,0,0,0.08);
+  }
+  @media (prefers-color-scheme: dark) {
+    :root { --card: rgba(28,30,52,0.96); --text: #e9ebf5; --muted: #a4a9c6; --line: rgba(255,255,255,0.10); }
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0; font-family: -apple-system, BlinkMacSystemFont, "Apple SD Gothic Neo", "Pretendard", "Segoe UI", Roboto, sans-serif;
+    background: linear-gradient(160deg, var(--bg1) 0%, var(--bg2) 45%, var(--bg3) 100%);
+    background-attachment: fixed; color: var(--text); min-height: 100vh;
+    -webkit-font-smoothing: antialiased; line-height: 1.7;
+  }
+  .wrap { max-width: 760px; margin: 0 auto; padding: 48px 20px 80px; }
+  .brand { display: flex; align-items: center; gap: 12px; color: #fff; margin-bottom: 28px; }
+  .brand .moon { font-size: 34px; }
+  .brand h1 { font-size: 22px; margin: 0; font-weight: 700; }
+  .card { background: var(--card); border-radius: 22px; padding: 34px 30px;
+    box-shadow: 0 20px 50px rgba(20,20,60,0.28); margin-bottom: 22px; }
+  h2.title { margin: 0 0 6px; font-size: 26px; }
+  .sub { color: var(--muted); font-size: 15px; margin-bottom: 22px; }
+  h3 { margin: 26px 0 8px; font-size: 18px; }
+  p, li { color: var(--text); font-size: 16px; }
+  ul { padding-left: 20px; }
+  li { margin: 6px 0; }
+  .faq { border-top: 1px solid var(--line); padding-top: 16px; margin-top: 8px; }
+  .q { font-weight: 700; margin: 18px 0 4px; }
+  a { color: var(--accent); text-decoration: none; }
+  a:hover { text-decoration: underline; }
+  .contact { display: inline-block; background: var(--accent); color: #fff !important;
+    padding: 12px 22px; border-radius: 12px; font-weight: 600; margin-top: 10px; }
+  .contact:hover { text-decoration: none; opacity: 0.92; }
+  .foot { color: rgba(255,255,255,0.85); text-align: center; margin-top: 26px; font-size: 14px; }
+  .foot a { color: #fff; text-decoration: underline; }
+</style>
+</head>
+<body>
+  <div class="wrap">
+    <div class="brand"><span class="moon">🌙</span><h1>음력세기</h1></div>
+
+    <div class="card">
+      <h2 class="title">지원 (Support)</h2>
+      <div class="sub">음력세기 사용 중 궁금한 점이나 도움이 필요하신가요?</div>
+
+      <p><strong>음력세기</strong>는 중요한 날짜를 <strong>양력·음력</strong>으로 관리하고,
+      홈 화면·잠금 화면 위젯으로 남은 일수(D-day)를 한눈에 확인하는 앱입니다.</p>
+
+      <h3>주요 기능</h3>
+      <ul>
+        <li>양력/음력 디데이 등록 — 음력 생일·기념일도 매년 자동으로 계산</li>
+        <li>디데이 방식과 누적일(며칠째) 방식 지원</li>
+        <li>아이콘·색상으로 항목 꾸미기</li>
+        <li>홈 화면(소/중) 및 잠금 화면(원형·직사각형·인라인) 위젯</li>
+        <li>매일 자정 자동 갱신</li>
+      </ul>
+    </div>
+
+    <div class="card">
+      <h3 style="margin-top:0">자주 묻는 질문</h3>
+      <div class="faq">
+        <div class="q">음력 날짜는 어떻게 입력하나요?</div>
+        <p>디데이 추가 화면에서 달력을 <strong>음력</strong>으로 선택하면 음력 연·월·일(윤달 포함)을
+        직접 고를 수 있습니다. 선택한 음력 날짜에 해당하는 양력 날짜가 함께 표시됩니다.</p>
+
+        <div class="q">음력 생일이 매년 자동으로 바뀌나요?</div>
+        <p>네. 음력 항목에서 <strong>매년 반복</strong>을 켜면 매해 같은 음력 날짜에 맞춰
+        양력 날짜가 자동으로 계산됩니다.</p>
+
+        <div class="q">위젯에 표시할 디데이를 바꾸려면?</div>
+        <p>목록에서 항목을 왼쪽으로 밀어 <strong>📌 고정</strong>하거나, 홈 화면에서 위젯을 길게 눌러
+        <strong>"디데이 선택"</strong>에서 표시할 항목을 지정할 수 있습니다.</p>
+
+        <div class="q">위젯 숫자가 갱신되지 않아요.</div>
+        <p>위젯은 매일 자정에 자동 갱신됩니다. 즉시 반영이 필요하면 앱을 한 번 실행하거나
+        위젯을 삭제 후 다시 추가해 보세요.</p>
+
+        <div class="q">데이터는 안전한가요?</div>
+        <p>모든 데이터는 이용자의 기기 안에만 저장되며 외부로 전송되지 않습니다.
+        자세한 내용은 <a href="privacy.html">개인정보 처리방침</a>을 확인하세요.</p>
+      </div>
+    </div>
+
+    <div class="card">
+      <h3 style="margin-top:0">문의하기</h3>
+      <p>버그 제보, 기능 제안, 기타 문의는 이메일로 보내주세요. 최대한 빠르게 답변드리겠습니다.</p>
+      <a class="contact" href="mailto:mizzking75@gmail.com?subject=%5B%EC%9D%8C%EB%A0%A5%EC%84%B8%EA%B8%B0%5D%20%EB%AC%B8%EC%9D%98">✉️ mizzking75@gmail.com</a>
+    </div>
+
+    <div class="foot"><a href="./">← 음력세기 홈</a> · <a href="privacy.html">개인정보 처리방침</a></div>
+  </div>
+</body>
+</html>

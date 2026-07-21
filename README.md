@@ -1,10 +1,18 @@
-# DDayCounter (디데이)
+# 음력세기 (DDayCounter)
 
-여러 개의 디데이(D-day)를 관리하고, **홈 화면 위젯**과 **잠금 화면 위젯**에서 남은 일수를 확인할 수 있는 iOS 앱입니다.
+여러 개의 디데이(D-day)를 **양력·음력**으로 관리하고, **홈 화면 위젯**과 **잠금 화면 위젯**에서 남은 일수를 확인할 수 있는 iOS 앱입니다.
 
 - SwiftUI + WidgetKit
 - 최소 지원: **iOS 17.0**
 - 앱 ↔ 위젯 데이터 공유: **App Group** (`group.com.example.DDayCounter`)
+
+## 지원 · 개인정보 처리방침
+
+- 🛟 지원(Support): https://m1zz.github.io/DDayCounter/support.html
+- 🔒 개인정보 처리방침: https://m1zz.github.io/DDayCounter/privacy.html
+
+> 위 페이지는 저장소의 [`docs/`](docs/) 폴더에서 서빙됩니다.
+> GitHub 저장소 **Settings → Pages → Source** 를 `main` 브랜치 `/docs` 폴더로 설정하면 활성화됩니다.
 
 ## 폴더 구조
 
