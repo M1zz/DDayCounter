@@ -69,8 +69,9 @@ enum KoreanLunar {
                            inGregorianYear year: Int) -> Date? {
         let leapOptions = isLeap ? [true, false] : [false]
         for leap in leapOptions {
-            // day가 30인데 그 달이 29일까지만 있는 경우 29일로 보정
-            for candidateDay in stride(from: day, through: 29, by: -1) {
+            // 요청한 day부터 시작해, 그 달에 해당 일이 없으면(예: 30일인데 29일까지만 있는 달)
+            // 한 칸씩 내려가며 존재하는 가장 가까운 일자로 보정한다. (day 1~28은 첫 시도에서 바로 매칭)
+            for candidateDay in stride(from: day, through: 1, by: -1) {
                 if let date = solarDate(lunarMonth: month, lunarDay: candidateDay,
                                         isLeap: leap, gregorianYear: year) {
                     let check = components(from: date)
