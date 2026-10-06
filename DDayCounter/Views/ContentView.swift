@@ -94,6 +94,9 @@ struct DDayRow: View {
 
             VStack(alignment: .leading, spacing: 4) {
                 HStack(spacing: 6) {
+                    if !item.relation.isEmpty {
+                        RelationTag(text: item.relation, color: item.color)
+                    }
                     Text(item.title)
                         .font(.headline)
                         .foregroundStyle(.primary)
@@ -124,6 +127,23 @@ struct DDayRow: View {
                 .foregroundStyle(item.color)
         }
         .padding(.vertical, 4)
+    }
+}
+
+/// 관계 표시 태그 (예: "엄마")
+struct RelationTag: View {
+    let text: String
+    let color: Color
+
+    var body: some View {
+        Text(text)
+            .font(.caption.weight(.semibold))
+            .foregroundStyle(color)
+            .padding(.horizontal, 7)
+            .padding(.vertical, 2)
+            .background(Capsule().fill(color.opacity(0.15)))
+            .lineLimit(1)
+            .fixedSize()
     }
 }
 

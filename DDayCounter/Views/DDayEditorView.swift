@@ -21,6 +21,7 @@ struct DDayEditorView: View {
     @State private var symbol: String
     @State private var repeatsYearly: Bool
     @State private var isLunar: Bool
+    @State private var relation: String
     @State private var pinToWidget: Bool
 
     // 음력 직접 선택용 상태 (양력 date와 동기화됨)
@@ -40,6 +41,7 @@ struct DDayEditorView: View {
         _repeatsYearly = State(initialValue: item?.repeatsYearly ?? false)
         // 편집이면 기존 값, 새로 추가면 전역 달력 모드를 기본값으로 사용
         _isLunar = State(initialValue: item?.isLunar ?? DDayStore.shared.calendarMode.isLunar)
+        _relation = State(initialValue: item?.relation ?? "")
         _pinToWidget = State(initialValue: false)
 
         // 음력 선택 상태를 date로부터 초기화
@@ -89,6 +91,8 @@ struct DDayEditorView: View {
                             .lineSpacing(3)
                     }
                 }
+
+                relationSection
 
                 Section("카운트 방식") {
                     Picker("방식", selection: $style) {
@@ -178,6 +182,52 @@ struct DDayEditorView: View {
         }
     }
 
+    // MARK: - 관계 선택 UI
+
+    private var relationSection: some View {
+        Section {
+            TextField("직접 입력 (예: 엄마, 친구)", text: $relation)
+            ForEach(DDayRelation.groups) { group in
+                VStack(alignment: .leading, spacing: 6) {
+                    Text(group.title)
+                        .font(.caption)
+                        .foregroundStyle(.secondary)
+                    ScrollView(.horizontal, showsIndicators: false) {
+                        HStack(spacing: 8) {
+                            ForEach(group.relations, id: \.self) { r in
+                                relationChip(r)
+                            }
+                        }
+                        .padding(.vertical, 2)
+                    }
+                }
+            }
+        } header: {
+            Text("관계")
+        } footer: {
+            Text("누구와 관련된 날인지 적어두면 목록과 위젯에 함께 표시돼요. 비워두면 표시하지 않아요.")
+        }
+    }
+
+    private func relationChip(_ r: String) -> some View {
+        let selected = relation.trimmingCharacters(in: .whitespaces) == r
+        let tint = Color(hex: colorHex) ?? .accentColor
+        return Button {
+            // 선택된 칩을 다시 누르면 해제
+            relation = selected ? "" : r
+        } label: {
+            Text(r)
+                .font(.subheadline)
+                .padding(.horizontal, 12)
+                .padding(.vertical, 6)
+                .background(Capsule().fill(selected ? tint.opacity(0.2) : Color.gray.opacity(0.1)))
+                .overlay(Capsule().stroke(selected ? tint : .clear, lineWidth: 1.5))
+                .foregroundStyle(selected ? tint : .primary)
+        }
+        .buttonStyle(.plain)
+        .accessibilityAddTraits(selected ? .isSelected : [])
+    }
+
     // MARK: - 음력 날짜 선택 UI
 
     @ViewBuilder
@@ -257,6 +307,7 @@ struct DDayEditorView: View {
 
     private func save() {
         let trimmed = title.trimmingCharacters(in: .whitespaces)
+        let trimmedRelation = relation.trimmingCharacters(in: .whitespaces)
         guard !trimmed.isEmpty else { return }
 
         if let existing = item {
@@ -268,12 +319,14 @@ struct DDayEditorView: View {
             updated.symbol = symbol
             updated.repeatsYearly = repeatsYearly
             updated.isLunar = isLunar
+            updated.relation = trimmedRelation
             store.update(updated)
             if pinToWidget { store.pinnedID = updated.id }
         } else {
             let newItem = DDayItem(title: trimmed, date: date, style: style,
                                    colorHex: colorHex, symbol: symbol,
-                                   repeatsYearly: repeatsYearly, isLunar: isLunar)
+                                   repeatsYearly: repeatsYearly, isLunar: isLunar,
+                                   relation: trimmedRelation)
             store.add(newItem)
             if pinToWidget { store.pinnedID = newItem.id }
         }

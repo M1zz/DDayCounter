@@ -25,6 +25,28 @@ enum DDayCountStyle: String, Codable, CaseIterable, Identifiable {
     }
 }
 
+/// 디데이에 붙일 수 있는 관계 프리셋 (직접 입력도 가능)
+enum DDayRelation {
+    struct Group: Identifiable {
+        let title: String
+        let relations: [String]
+        var id: String { title }
+    }
+
+    static let groups: [Group] = [
+        Group(title: "가족", relations: [
+            "엄마", "아빠", "할머니", "할아버지", "외할머니", "외할아버지",
+            "아내", "남편", "아들", "딸",
+            "형", "오빠", "누나", "언니", "동생",
+            "이모", "고모", "삼촌", "외삼촌",
+            "시어머니", "시아버지", "장모님", "장인어른", "손주"
+        ]),
+        Group(title: "지인", relations: [
+            "연인", "친구", "동료", "선배", "후배", "선생님", "반려동물"
+        ])
+    ]
+}
+
 /// 하나의 디데이 이벤트
 struct DDayItem: Codable, Identifiable, Hashable {
     var id: UUID
@@ -42,6 +64,8 @@ struct DDayItem: Codable, Identifiable, Hashable {
     var repeatsYearly: Bool
     /// 음력 날짜 여부 (true면 date를 음력으로 해석·표시하고, 반복 시 음력 기준으로 계산)
     var isLunar: Bool
+    /// 이 디데이와 관련된 사람과의 관계 (예: "엄마", "친구"). 빈 문자열이면 없음
+    var relation: String
     /// 생성 시각 (정렬용)
     var createdAt: Date
 
@@ -53,6 +77,7 @@ struct DDayItem: Codable, Identifiable, Hashable {
          symbol: String = "🎯",
          repeatsYearly: Bool = false,
          isLunar: Bool = false,
+         relation: String = "",
          createdAt: Date = Date()) {
         self.id = id
         self.title = title
@@ -62,12 +87,13 @@ struct DDayItem: Codable, Identifiable, Hashable {
         self.symbol = symbol
         self.repeatsYearly = repeatsYearly
         self.isLunar = isLunar
+        self.relation = relation
         self.createdAt = createdAt
     }
 
-    // 기존에 저장된 데이터(isLunar 필드 없음)와의 호환을 위한 디코딩
+    // 기존에 저장된 데이터(isLunar·relation 필드 없음)와의 호환을 위한 디코딩
     enum CodingKeys: String, CodingKey {
-        case id, title, date, style, colorHex, symbol, repeatsYearly, isLunar, createdAt
+        case id, title, date, style, colorHex, symbol, repeatsYearly, isLunar, relation, createdAt
     }
 
     init(from decoder: Decoder) throws {
@@ -80,6 +106,7 @@ struct DDayItem: Codable, Identifiable, Hashable {
         symbol = try c.decode(String.self, forKey: .symbol)
         repeatsYearly = try c.decode(Bool.self, forKey: .repeatsYearly)
         isLunar = try c.decodeIfPresent(Bool.self, forKey: .isLunar) ?? false
+        relation = try c.decodeIfPresent(String.self, forKey: .relation) ?? ""
         createdAt = try c.decode(Date.self, forKey: .createdAt)
     }
 }

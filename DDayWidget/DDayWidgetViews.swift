@@ -42,6 +42,9 @@ struct HomeSmallView: View {
                 HStack {
                     Text(item.symbol).font(.title3)
                     Spacer()
+                    if !item.relation.isEmpty {
+                        WidgetRelationTag(item: item)
+                    }
                 }
                 Spacer()
                 Text(item.title)
@@ -82,9 +85,14 @@ struct HomeMediumView: View {
                 .frame(width: 92, height: 92)
 
                 VStack(alignment: .leading, spacing: 6) {
-                    Text(item.title)
-                        .font(.headline)
-                        .lineLimit(1)
+                    HStack(spacing: 6) {
+                        if !item.relation.isEmpty {
+                            WidgetRelationTag(item: item)
+                        }
+                        Text(item.title)
+                            .font(.headline)
+                            .lineLimit(1)
+                    }
                     Text(item.countText(reference: entry.date))
                         .font(.system(size: 42, weight: .heavy, design: .rounded))
                         .foregroundStyle(item.color)
@@ -175,6 +183,23 @@ struct LockInlineView: View {
         } else {
             Text("디데이를 추가하세요")
         }
+    }
+}
+
+// MARK: - 관계 태그
+
+struct WidgetRelationTag: View {
+    let item: DDayItem
+
+    var body: some View {
+        Text(item.relation)
+            .font(.caption2.weight(.semibold))
+            .foregroundStyle(item.color)
+            .padding(.horizontal, 6)
+            .padding(.vertical, 2)
+            .background(Capsule().fill(item.color.opacity(0.18)))
+            .lineLimit(1)
+            .fixedSize()
     }
 }
 
