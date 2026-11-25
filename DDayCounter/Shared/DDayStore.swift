@@ -53,7 +53,38 @@ final class DDayStore: ObservableObject {
 
     private init() {
         load()
+        #if DEBUG
+        if ProcessInfo.processInfo.arguments.contains("-ScreenshotSeed") { seedForScreenshots() }
+        #endif
     }
+
+    #if DEBUG
+    /// 스토어 스크린샷용 예시 데이터 (디버그 빌드에서 -ScreenshotSeed 로만)
+    private func seedForScreenshots() {
+        func lunar(_ y: Int, _ m: Int, _ d: Int) -> Date {
+            KoreanLunar.occurrence(month: m, day: d, isLeap: false, inGregorianYear: y) ?? Date()
+        }
+        func solar(_ y: Int, _ m: Int, _ d: Int) -> Date {
+            Calendar.current.date(from: DateComponents(year: y, month: m, day: d)) ?? Date()
+        }
+        let mom = DDayItem(title: "엄마 생신", date: lunar(1962, 11, 3), colorHex: "#FF6B6B", symbol: "🎂",
+                           repeatsYearly: true, isLunar: true, relation: "엄마")
+        items = [
+            mom,
+            DDayItem(title: "할아버지 제사", date: lunar(2015, 12, 20), colorHex: "#7950F2", symbol: "🕯️",
+                     repeatsYearly: true, isLunar: true, relation: "할아버지"),
+            DDayItem(title: "아빠 생신", date: lunar(1959, 2, 14), colorHex: "#4C6EF5", symbol: "🎁",
+                     repeatsYearly: true, isLunar: true, relation: "아빠"),
+            DDayItem(title: "결혼기념일", date: solar(2019, 4, 27), colorHex: "#F59F00", symbol: "💍",
+                     repeatsYearly: true, relation: "아내"),
+            DDayItem(title: "할머니 생신", date: lunar(1938, 8, 9), colorHex: "#12B886", symbol: "🌸",
+                     repeatsYearly: true, isLunar: true, relation: "할머니")
+        ]
+        pinnedID = mom.id
+        calendarMode = .lunar
+        hasChosenCalendarMode = !ProcessInfo.processInfo.arguments.contains("-ScreenshotOnboarding")
+    }
+    #endif
 
     // MARK: - CRUD
 

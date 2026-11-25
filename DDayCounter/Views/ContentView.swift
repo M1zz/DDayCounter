@@ -9,14 +9,14 @@ import SwiftUI
 
 struct ContentView: View {
     @EnvironmentObject var store: DDayStore
-    @State private var showingEditor = false
-    @State private var editingItem: DDayItem?
+    /// 열려 있는 편집 화면 (nil 이면 닫힘). 하나의 값으로 두어 시트가 늘 맞는 항목을 연다
+    @State private var editor: EditorTarget?
 
     var body: some View {
         NavigationStack {
             Group {
                 if store.items.isEmpty {
-                    EmptyStateView { showingEditor = true }
+                    EmptyStateView { editor = .new }
                 } else {
                     listContent
                 }
@@ -25,18 +25,25 @@ struct ContentView: View {
             .toolbar {
                 ToolbarItem(placement: .topBarTrailing) {
                     Button {
-                        editingItem = nil
-                        showingEditor = true
+                        editor = .new
                     } label: {
                         Image(systemName: "plus")
                     }
                     .accessibilityLabel("디데이 추가")
                 }
             }
-            .sheet(isPresented: $showingEditor) {
-                DDayEditorView(item: editingItem)
+            .sheet(item: $editor) { target in
+                DDayEditorView(item: target.item)
                     .environmentObject(store)
             }
+            #if DEBUG
+            .onAppear {
+                // 스토어 스크린샷용: 첫 디데이 편집 화면을 바로 연다
+                if ProcessInfo.processInfo.arguments.contains("-ScreenshotEditor") {
+                    editor = store.sortedByUpcoming.first { $0.isLunar }.map { .edit($0) }
+                }
+            }
+            #endif
         }
     }
 
@@ -45,8 +52,7 @@ struct ContentView: View {
             Section {
                 ForEach(store.sortedByUpcoming) { item in
                     Button {
-                        editingItem = item
-                        showingEditor = true
+                        editor = .edit(item)
                     } label: {
                         DDayRow(item: item, isPinned: store.pinnedID == item.id)
                     }
@@ -74,6 +80,24 @@ struct ContentView: View {
             }
         }
         .listStyle(.insetGrouped)
+    }
+}
+
+/// 편집 시트가 열 대상
+enum EditorTarget: Identifiable {
+    case new
+    case edit(DDayItem)
+
+    var id: String {
+        switch self {
+        case .new: return "new"
+        case .edit(let item): return item.id.uuidString
+        }
+    }
+
+    var item: DDayItem? {
+        if case .edit(let item) = self { return item }
+        return nil
     }
 }
 
