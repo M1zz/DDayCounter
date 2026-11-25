@@ -3,7 +3,7 @@
 
 다시 만들 때: 시뮬레이터에서 디버그 빌드를 -ScreenshotSeed 로 실행해 raw/ 를 새로 찍고
 (편집 화면은 -ScreenshotEditor, 첫 화면은 -ScreenshotOnboarding 을 함께) 이 스크립트를 실행한다.
-출력: docs/screenshots/marketing/ (아이폰 1242×2688) · marketing/ipad/ (2064×2752)
+출력: docs/screenshots/marketing/ (아이폰 1242×2688 · 아이패드 ipad-*.png 2064×2752, 기기는 픽셀로 갈린다)
 """
 import pathlib
 import subprocess
@@ -54,7 +54,7 @@ body {{ background:{bg}; font-family:-apple-system, "Apple SD Gothic Neo", sans-
 </body></html>"""
 
 
-def render(device, shots, out_dir):
+def render(device, shots, out_dir, prefix=""):
     d = DEVICES[device]
     out_dir.mkdir(parents=True, exist_ok=True)
     with tempfile.TemporaryDirectory() as tmp:
@@ -66,7 +66,7 @@ def render(device, shots, out_dir):
                 gold=GOLD, headline=headline, subtext=subtext, img=(RAW / src).as_uri())
             page = pathlib.Path(tmp) / "page.html"
             page.write_text(html, encoding="utf-8")
-            out = out_dir / pathlib.Path(src).name
+            out = out_dir / (prefix + pathlib.Path(src).name)
             subprocess.run([CHROME, "--headless=new", f"--screenshot={out}",
                             f"--window-size={d['w']},{d['h']}", "--force-device-scale-factor=1",
                             "--hide-scrollbars", "--disable-gpu", page.as_uri()],
@@ -76,4 +76,4 @@ def render(device, shots, out_dir):
 
 if __name__ == "__main__":
     render("iphone", IPHONE, OUT)
-    render("ipad", IPAD, OUT / "ipad")
+    render("ipad", IPAD, OUT, prefix="ipad-")
