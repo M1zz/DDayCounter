@@ -18,7 +18,7 @@ struct CalendarModeOnboardingView: View {
             VStack(spacing: 12) {
                 Text("🌙")
                     .font(.system(size: 64))
-                Text("음력세기")
+                Text("음력 계산기")
                     .font(.largeTitle.bold())
                 Text("어떤 달력을 기본으로 사용할까요?")
                     .font(.headline)

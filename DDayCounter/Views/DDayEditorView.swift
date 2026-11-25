@@ -38,7 +38,8 @@ struct DDayEditorView: View {
         _style = State(initialValue: item?.style ?? .dday)
         _colorHex = State(initialValue: item?.colorHex ?? DDayPalette.colors[0])
         _symbol = State(initialValue: item?.symbol ?? DDayPalette.symbols[0])
-        _repeatsYearly = State(initialValue: item?.repeatsYearly ?? false)
+        // 생일 앱이므로 새로 추가할 때는 매년 반복을 기본으로 켠다
+        _repeatsYearly = State(initialValue: item?.repeatsYearly ?? true)
         // 편집이면 기존 값, 새로 추가면 전역 달력 모드를 기본값으로 사용
         _isLunar = State(initialValue: item?.isLunar ?? DDayStore.shared.calendarMode.isLunar)
         _relation = State(initialValue: item?.relation ?? "")
@@ -82,6 +83,8 @@ struct DDayEditorView: View {
                     }
 
                     Toggle("매년 반복 (생일·기념일)", isOn: $repeatsYearly)
+
+                    nextOccurrenceRow
                 } header: {
                     Text("정보")
                 } footer: {
@@ -180,6 +183,52 @@ struct DDayEditorView: View {
                 }
             }
         }
+    }
+
+    // MARK: - 다음 생일 안내
+
+    /// 입력한 생년월일(또는 음력 월일)로 계산한 다음 생일을 바로 보여준다
+    @ViewBuilder
+    private var nextOccurrenceRow: some View {
+        let preview = previewItem
+        if repeatsYearly {
+            VStack(alignment: .leading, spacing: 4) {
+                HStack {
+                    Text(nextOccurrenceLabel)
+                        .foregroundStyle(.secondary)
+                    Spacer()
+                    Text(preview.countText())
+                        .font(.headline)
+                        .foregroundStyle(Color(hex: colorHex) ?? .accentColor)
+                }
+                Text(preview.solarDateText())
+                    .font(.body.weight(.semibold))
+                if let detail = nextOccurrenceDetail(preview) {
+                    Text(detail)
+                        .font(.subheadline)
+                        .foregroundStyle(.secondary)
+                }
+            }
+            .padding(.vertical, 2)
+            .accessibilityElement(children: .combine)
+        } else if preview.dayDifference() < 0 {
+            Text("지난 날짜예요. 생일이라면 매년 반복을 켜면 다음 생일을 알려드려요.")
+                .font(.footnote)
+                .foregroundStyle(.secondary)
+        }
+    }
+
+    private var nextOccurrenceLabel: String {
+        let t = title
+        return (t.contains("생일") || t.contains("생신")) ? "다음 생일" : "다음 돌아오는 날"
+    }
+
+    /// 예: "음력 3월 5일 · 67번째"
+    private func nextOccurrenceDetail(_ preview: DDayItem) -> String? {
+        var parts: [String] = []
+        if let lunar = preview.lunarText() { parts.append(lunar) }
+        if let n = preview.nextAnniversaryCount() { parts.append("\(n)번째") }
+        return parts.isEmpty ? nil : parts.joined(separator: " · ")
     }
 
     // MARK: - 관계 선택 UI
@@ -298,12 +347,13 @@ struct DDayEditorView: View {
         lunarIsLeap = lunar.isLeap
     }
 
-    private var previewText: String {
-        let temp = DDayItem(title: title, date: date, style: style,
-                            colorHex: colorHex, symbol: symbol,
-                            repeatsYearly: repeatsYearly, isLunar: isLunar)
-        return temp.countText()
+    private var previewItem: DDayItem {
+        DDayItem(title: title, date: date, style: style,
+                 colorHex: colorHex, symbol: symbol,
+                 repeatsYearly: repeatsYearly, isLunar: isLunar)
     }
+
+    private var previewText: String { previewItem.countText() }
 
     private func save() {
         let trimmed = title.trimmingCharacters(in: .whitespaces)

@@ -115,48 +115,41 @@ struct DDayItem: Codable, Identifiable, Hashable {
 
 extension DDayItem {
 
-    /// 반복 옵션을 고려한 "다음(또는 오늘 기준) 기준 날짜"
+    /// 반복 옵션을 고려한 기준 날짜.
+    /// 매년 반복이면 오늘 이후(오늘 포함) 가장 가까운 발생일이라 D+ 가 나오지 않는다.
     func effectiveDate(reference: Date = Date()) -> Date {
-        let cal = Calendar.current
-        let startOfRef = cal.startOfDay(for: reference)
-
-        // 음력 처리
-        if isLunar {
-            guard repeatsYearly else { return date }
-            let lunar = KoreanLunar.components(from: date)
-            let refYear = cal.component(.year, from: reference)
-            // 올해 음력 발생일
-            if let thisYear = KoreanLunar.occurrence(month: lunar.month, day: lunar.day,
-                                                     isLeap: lunar.isLeap, inGregorianYear: refYear) {
-                if cal.startOfDay(for: thisYear) >= startOfRef {
-                    return thisYear
-                }
-                // 이미 지났으면 내년 음력 발생일
-                if let nextYear = KoreanLunar.occurrence(month: lunar.month, day: lunar.day,
-                                                         isLeap: lunar.isLeap, inGregorianYear: refYear + 1) {
-                    return nextYear
-                }
-                return thisYear
-            }
-            return date
-        }
-
         guard repeatsYearly else { return date }
+        let cal = Calendar.current
+        let today = cal.startOfDay(for: reference)
+        let year = cal.component(.year, from: reference)
 
-        // 매년 반복: 올해(또는 그 이후)의 가장 가까운 미래 발생일을 계산
-        let comps = cal.dateComponents([.month, .day], from: date)
-        var target = date
-        // 올해로 옮긴 뒤, 이미 지났으면 내년으로
-        if let thisYear = cal.date(from: DateComponents(
-            year: cal.component(.year, from: reference),
-            month: comps.month,
-            day: comps.day)) {
-            target = thisYear
-            if cal.startOfDay(for: thisYear) < startOfRef {
-                target = cal.date(byAdding: .year, value: 1, to: thisYear) ?? thisYear
+        // 음력 11·12월은 양력으로 다음 해 1·2월에 오므로 전년부터 몇 해를 넉넉히 보고
+        // 오늘 이후 가장 가까운 날을 고른다.
+        let lunar = isLunar ? KoreanLunar.components(from: date) : nil
+        let solar = cal.dateComponents([.month, .day], from: date)
+        let next = (year - 1...year + 2)
+            .compactMap { y -> Date? in
+                if let lunar {
+                    return KoreanLunar.occurrence(month: lunar.month, day: lunar.day,
+                                                  isLeap: lunar.isLeap, inGregorianYear: y)
+                }
+                return cal.date(from: DateComponents(year: y, month: solar.month, day: solar.day))
             }
-        }
-        return target
+            .filter { cal.startOfDay(for: $0) >= today }
+            .min()
+        return next ?? today
+    }
+
+    /// 매년 반복 항목에서 다음 발생일이 몇 번째 돌인지 (예: 1960년생의 2026년 생일 → 66).
+    /// 기준 날짜가 과거가 아니거나 반복이 아니면 nil
+    func nextAnniversaryCount(reference: Date = Date()) -> Int? {
+        guard repeatsYearly else { return nil }
+        let cal = Calendar.current
+        let days = cal.dateComponents([.day], from: cal.startOfDay(for: date),
+                                      to: cal.startOfDay(for: effectiveDate(reference: reference))).day ?? 0
+        // 음력은 양력 날짜가 해마다 3~4주씩 흔들리므로 연 단위로 반올림해 센다
+        let years = Int((Double(days) / 365.2425).rounded())
+        return years > 0 ? years : nil
     }
 
     /// 기준일과 목표일 사이의 일수 (양수 = 미래, 0 = 오늘, 음수 = 과거)

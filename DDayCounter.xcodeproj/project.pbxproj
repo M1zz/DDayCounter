@@ -406,7 +406,7 @@
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = DDayCounter/Info.plist;
-				INFOPLIST_KEY_CFBundleDisplayName = "엄마생일";
+				INFOPLIST_KEY_CFBundleDisplayName = "음력 계산기";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -435,7 +435,7 @@
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = DDayCounter/Info.plist;
-				INFOPLIST_KEY_CFBundleDisplayName = "엄마생일";
+				INFOPLIST_KEY_CFBundleDisplayName = "음력 계산기";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -460,7 +460,7 @@
 				DEVELOPMENT_TEAM = QGAQ3AY3R3;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = DDayWidget/Info.plist;
-				INFOPLIST_KEY_CFBundleDisplayName = "음력세기";
+				INFOPLIST_KEY_CFBundleDisplayName = "음력 계산기";
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -485,7 +485,7 @@
 				DEVELOPMENT_TEAM = QGAQ3AY3R3;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = DDayWidget/Info.plist;
-				INFOPLIST_KEY_CFBundleDisplayName = "음력세기";
+				INFOPLIST_KEY_CFBundleDisplayName = "음력 계산기";
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
