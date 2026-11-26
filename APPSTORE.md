@@ -69,6 +69,34 @@ https://m1zz.github.io/DDayCounter/
 <!-- 앱 심사 정보 ▸ 메모 칸에 그대로 올라간다 (영어로, 4000자까지).
      구매해야만 보이는 인앱(올리기 · 졸업가 등)이 있으면 찾는 길을 순서대로 적는다 — 없으면 2.1(b). -->
 
+Thank you for reviewing. Answers to each item of the 2.1 information request:
+
+1. Screen recording
+Recorded on a physical iPhone 14 Pro Max running iOS 27.2.1, starting from app launch:
+https://m1zz.github.io/DDayCounter/review/demo.mp4
+The app has no account registration, login, user-generated content shared with others, or paid content, so none of those flows exist.
+
+2. Purpose and target audience
+Many people in Korea celebrate birthdays of parents and grandparents, and memorial days (jesa), on the lunar calendar. The solar date of these days changes every year, so people have to look them up again each year.
+Lunar Calculator lets the user enter a lunar date once. It converts it to this year's solar date, counts down the days left, and automatically rolls over to next year once the day has passed. Solar dates are supported too.
+Target audience: anyone who keeps track of lunar birthdays, memorial days, holidays and other important dates, mainly Korean-speaking users.
+
+3. How to use the main features
+No login, account, setup or sample files are needed.
+On first launch, choose the default calendar (Solar or Lunar).
+Tap + to add a date: enter a title, choose Lunar or Solar, pick the date (a leap month can be selected for lunar dates), optionally add a relation such as Mom or Dad, and turn on Repeat yearly. Tap Save.
+The list shows the lunar date, this year's solar date and the D-day count. Tap a row to edit it. Swipe a row to pin it to the widget or delete it.
+Widgets: long-press the Home Screen or Lock Screen, add the app's D-Day widget (named "디데이"), and long-press the widget to choose which date it shows.
+
+4. External services
+None. The app makes no network requests and uses no third-party SDKs, analytics, advertising, authentication, payment or AI services. Lunar to solar conversion uses the system Chinese calendar in Apple's Foundation framework. All data is stored only on the device (shared with the widget through an App Group).
+
+5. Regional differences
+None. The app works the same in every region. The interface is in Korean.
+
+6. Regulated industry or third-party material
+Not applicable. The app is not in a regulated industry and contains no protected third-party material.
+
 ## 연령 등급
 
 <!-- 내용 문항이 전부 '해당 없음' 인 앱이면 아래 줄의 주석을 풀어라.
