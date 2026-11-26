@@ -64,6 +64,12 @@ https://m1zz.github.io/DDayCounter/privacy.html
 
 https://m1zz.github.io/DDayCounter/
 
+## 연령 등급
+
+<!-- 내용 문항이 전부 '해당 없음' 인 앱이면 아래 줄의 주석을 풀어라.
+     애플에 하는 내용 신고이므로 사람이 판단해서 적는다. -->
+해당 없음
+
 ## 심사 메모
 
 <!-- 앱 심사 정보 ▸ 메모 칸에 그대로 올라간다 (영어로, 4000자까지).
@@ -96,9 +102,3 @@ None. The app works the same in every region. The interface is in Korean.
 
 6. Regulated industry or third-party material
 Not applicable. The app is not in a regulated industry and contains no protected third-party material.
-
-## 연령 등급
-
-<!-- 내용 문항이 전부 '해당 없음' 인 앱이면 아래 줄의 주석을 풀어라.
-     애플에 하는 내용 신고이므로 사람이 판단해서 적는다. -->
-해당 없음
